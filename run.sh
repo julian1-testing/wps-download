@@ -72,7 +72,7 @@ EOF
 
 
 # submit wps job
-echo "submitting wps job, $WPS_JOB"
+echo "submitting wps job, $WPS_JOB to $GEOSERVER_URL"
 
 curl -s \
   --data @"$WPS_JOB" \
