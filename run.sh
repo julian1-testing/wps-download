@@ -84,7 +84,7 @@ curl -s \
   || exit 123
 
 # extract status
-STATUS_URL=$( java -jar ./Saxon-HE-debian.jar tmp/1.xml tmp/extract-status-url.xsl )
+STATUS_URL=$( java -jar ./saxon-he.jar tmp/1.xml tmp/extract-status-url.xsl )
 echo "STATUS_URL $STATUS_URL"
 
 # poll status until finished
@@ -97,7 +97,7 @@ while [ "$STATUS" = started ]; do
     > tmp/2.xml \
     || exit 123
 
-  STATUS=$( java -jar ./Saxon-HE-debian.jar tmp/2.xml tmp/extract-status.xsl )
+  STATUS=$( java -jar ./saxon-he.jar tmp/2.xml tmp/extract-status.xsl )
   echo "status is, '$STATUS'"
 
   if [ "$STATUS" = failed ]; then
@@ -108,7 +108,7 @@ while [ "$STATUS" = started ]; do
 done
 
 # extract download url
-DOWNLOAD_URL=$( java -jar ./Saxon-HE-debian.jar tmp/2.xml tmp/extract-download-url.xsl )
+DOWNLOAD_URL=$( java -jar ./saxon-he.jar tmp/2.xml tmp/extract-download-url.xsl )
 
 # download
 echo "DOWNLOAD_URL $DOWNLOAD_URL"
