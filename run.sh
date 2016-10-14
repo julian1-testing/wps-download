@@ -4,6 +4,7 @@
 # uses curl, java, saxon, xmllint, xml, and xslt!
 
 GEOSERVER_URL=http://geoserver-rc.aodn.org.au/geoserver/wps
+# GEOSERVER_URL=http://geoserver-test/geoserver/wps
 WPS_JOB=wps-ts_timeseries.xml
 
 [ -d tmp ] && rm tmp -rf
@@ -71,6 +72,33 @@ cat > tmp/extract-download-url.xsl << EOF
 EOF
 
 
+cat > tmp/extract-exception.xsl << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="2.0" 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+
+    xmlns:wps="http://www.opengis.net/wps/1.0.0"
+    xmlns:ows="http://www.opengis.net/ows/1.1"
+    exclude-result-prefixes="xsl"
+>
+  <xsl:output method="text"/>
+
+  <xsl:template match="ows:Exception/ows:ExceptionText">
+      <xsl:value-of select="." />
+  </xsl:template>
+
+  <!-- suppress warnings about mixed namespacing -->
+  <xsl:template match="wps:ExecuteResponse">
+  </xsl:template>
+
+  <xsl:template match="@*|node()">
+      <xsl:apply-templates select="@*|node()"/>
+  </xsl:template>
+</xsl:stylesheet>
+EOF
+
+
+
 # submit wps job
 echo "submitting wps job, $WPS_JOB to $GEOSERVER_URL"
 
@@ -82,6 +110,14 @@ curl -s \
   | xmllint --format - \
   > tmp/1.xml \
   || exit 123
+
+
+# check errors
+EXCEPTION=$( java -jar ./saxon-he.jar tmp/1.xml tmp/extract-exception.xsl )
+if [ -n "$EXCEPTION" ]; then
+  echo "Got error, '$EXCEPTION'"
+  exit
+fi
 
 # extract status
 STATUS_URL=$( java -jar ./saxon-he.jar tmp/1.xml tmp/extract-status-url.xsl )
