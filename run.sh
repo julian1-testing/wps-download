@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bash script to submit an async wps job, poll and download the result, 
+# Bash script to submit an async wps job, poll and download the result,
 # uses curl, java, saxon, xmllint, xml, and xslt!
 
 GEOSERVER_URL=http://geoserver-rc.aodn.org.au/geoserver/wps
@@ -12,8 +12,8 @@ mkdir tmp
 
 cat > tmp/extract-status-url.xsl << EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:wps="http://www.opengis.net/wps/1.0.0"
     exclude-result-prefixes="xsl"
 >
@@ -27,8 +27,8 @@ EOF
 
 cat > tmp/extract-status.xsl << EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:wps="http://www.opengis.net/wps/1.0.0"
     exclude-result-prefixes="xsl"
 >
@@ -54,8 +54,8 @@ EOF
 
 cat > tmp/extract-download-url.xsl << EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:wps="http://www.opengis.net/wps/1.0.0"
     exclude-result-prefixes="xsl"
 >
@@ -74,8 +74,8 @@ EOF
 
 cat > tmp/extract-exception.xsl << EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 
     xmlns:wps="http://www.opengis.net/wps/1.0.0"
     xmlns:ows="http://www.opengis.net/ows/1.1"
