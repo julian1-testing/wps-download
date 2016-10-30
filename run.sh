@@ -3,8 +3,9 @@
 # Bash script to submit an async wps job, poll and download the result,
 # uses curl, java, saxon, xmllint, xml, and xslt!
 
-GEOSERVER_URL=http://geoserver-rc.aodn.org.au/geoserver/wps
-# GEOSERVER_URL=http://geoserver-test/geoserver/wps
+# GEOSERVER_URL=http://geoserver-rc.aodn.org.au/geoserver/wps
+GEOSERVER_URL=http://geoserver-test/geoserver/wps
+# GEOSERVER_URL=http://geoserver-test2/geoserver/wps
 WPS_JOB=wps-ts_timeseries.xml
 
 [ -d tmp ] && rm tmp -rf
@@ -34,6 +35,10 @@ cat > tmp/extract-status.xsl << EOF
 >
   <xsl:output method="text"/>
 
+  <xsl:template match="wps:Status/wps:ProcessAccepted">
+      <xsl:text>accepted</xsl:text>
+  </xsl:template>
+
   <xsl:template match="wps:Status/wps:ProcessStarted">
       <xsl:text>started</xsl:text>
   </xsl:template>
@@ -49,6 +54,7 @@ cat > tmp/extract-status.xsl << EOF
   <xsl:template match="@*|node()">
       <xsl:apply-templates select="@*|node()"/>
   </xsl:template>
+
 </xsl:stylesheet>
 EOF
 
